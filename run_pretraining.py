@@ -69,6 +69,9 @@ flags.DEFINE_float("learning_rate", 5e-5, "The initial learning rate for Adam.")
 
 flags.DEFINE_integer("num_train_steps", 100000, "Number of training steps.")
 
+flags.DEFINE_float("num_train_epochs", 3.0,
+                   "Total number of training epochs to perform.")
+
 flags.DEFINE_integer("num_warmup_steps", 10000, "Number of warmup steps.")
 
 flags.DEFINE_integer("save_checkpoints_steps", 1000,
@@ -105,7 +108,7 @@ flags.DEFINE_integer(
     "num_tpu_cores", 8,
     "Only used if `use_tpu` is True. Total number of TPU cores to use.")
 
-
+# @TODO Alterar para epocas
 def model_fn_builder(bert_config, init_checkpoint, learning_rate,
                      num_train_steps, num_warmup_steps, use_tpu,
                      use_one_hot_embeddings):
@@ -173,6 +176,7 @@ def model_fn_builder(bert_config, init_checkpoint, learning_rate,
                       init_string)
 
     output_spec = None
+    # @TODO Alterar para épocas
     if mode == tf.estimator.ModeKeys.TRAIN:
       train_op = optimization.create_optimizer(
           total_loss, learning_rate, num_train_steps, num_warmup_steps, use_tpu)
@@ -417,6 +421,10 @@ def main(_):
   for input_pattern in FLAGS.input_file.split(","):
     input_files.extend(tf.io.gfile.glob(input_pattern))
 
+  if FLAGS.num_train_epochs:
+        FLAGS.num_train_steps = int(
+        len(input_files) / FLAGS.train_batch_size * FLAGS.num_train_epochs)
+
   tf.compat.v1.logging.info("*** Input Files ***")
   for input_file in input_files:
     tf.compat.v1.logging.info("  %s" % input_file)
@@ -437,6 +445,7 @@ def main(_):
           num_shards=FLAGS.num_tpu_cores,
           per_host_input_for_training=is_per_host))
 
+  # @TODO alterar para épocas
   model_fn = model_fn_builder(
       bert_config=bert_config,
       init_checkpoint=FLAGS.init_checkpoint,
@@ -463,6 +472,8 @@ def main(_):
         max_seq_length=FLAGS.max_seq_length,
         max_predictions_per_seq=FLAGS.max_predictions_per_seq,
         is_training=True)
+    
+    # @TODO alterar para épocas
     estimator.train(input_fn=train_input_fn, max_steps=FLAGS.num_train_steps)
 
   if FLAGS.do_eval:
