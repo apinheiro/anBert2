@@ -25,7 +25,7 @@ import tokenization
 import tensorflow as tf
 import tensorflow_hub as hub
 
-flags = tf.flags
+flags = tf.compat.flags
 
 FLAGS = flags.FLAGS
 

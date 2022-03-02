@@ -27,7 +27,7 @@ import modeling
 import tokenization
 import tensorflow as tf
 
-flags = tf.flags
+flags = tf.compat.flags
 
 FLAGS = flags.FLAGS
 

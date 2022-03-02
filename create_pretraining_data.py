@@ -24,7 +24,7 @@ import tokenization
 import tensorflow as tf
 from pathlib import Path
 
-flags = tf.flags
+flags = tf.compat.flags
 
 FLAGS = flags.FLAGS
 
