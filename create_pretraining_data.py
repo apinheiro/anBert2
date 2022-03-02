@@ -28,10 +28,10 @@ flags = tf.compat.v1.flags
 
 FLAGS = flags.FLAGS
 
-flags.DEFINE_string("input_file", None,
+flags.DEFINE_string("input_file", '',
                     "Input raw text file (or comma-separated list of files).")
 
-flags.DEFINE_string("input_path", None,
+flags.DEFINE_string("input_path", '',
                     "Input path to files training.")
 
 flags.DEFINE_string(
