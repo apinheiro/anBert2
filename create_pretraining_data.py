@@ -28,10 +28,10 @@ flags = tf.compat.v1.flags
 
 FLAGS = flags.FLAGS
 
-flags.DEFINE_string("input_file", '',
+flags.DEFINE_string("input_file", None,
                     "Input raw text file (or comma-separated list of files).")
 
-flags.DEFINE_string("input_path", '',
+flags.DEFINE_string("input_path", None,
                     "Input path to files training.")
 
 flags.DEFINE_string(
@@ -447,8 +447,9 @@ def main(_):
 
   input_files = [str(x) for x in Path(FLAGS.input_path).glob("**/*.txt")]
 
-  for input_pattern in FLAGS.input_file.split(","):
-    input_files.extend(tf.io.gfile.glob(input_pattern))
+  if FLAGS.input_file:
+    for input_pattern in FLAGS.input_file.split(","):
+      input_files.extend(tf.io.gfile.glob(input_pattern))
 
   tf.compat.v1.logging.info("*** Reading from input files ***")
   for input_file in input_files:
@@ -470,7 +471,7 @@ def main(_):
 
 
 if __name__ == "__main__":
-  flags.mark_flag_as_required("input_file")
+  flags.mark_flag_as_required("input_path")
   flags.mark_flag_as_required("output_file")
   flags.mark_flag_as_required("vocab_file")
   tf.compat.v1.app.run()
