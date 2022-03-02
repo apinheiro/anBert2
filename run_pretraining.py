@@ -421,9 +421,10 @@ def main(_):
   for input_pattern in FLAGS.input_file.split(","):
     input_files.extend(tf.io.gfile.glob(input_pattern))
 
+  # @TODO Ver como pegar este valor pelo arquivo. Por enquanto está um valor automático.
   if FLAGS.num_train_epochs:
         FLAGS.num_train_steps = int(
-        len(input_files) / FLAGS.train_batch_size * FLAGS.num_train_epochs)
+        741432 / FLAGS.train_batch_size * FLAGS.num_train_epochs) * 2
 
   tf.compat.v1.logging.info(len(input_files))
 
