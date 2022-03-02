@@ -425,6 +425,8 @@ def main(_):
         FLAGS.num_train_steps = int(
         len(input_files) / FLAGS.train_batch_size * FLAGS.num_train_epochs)
 
+  tf.compat.v1.logging.info(len(input_files))
+
   tf.compat.v1.logging.info("*** Input Files ***")
   for input_file in input_files:
     tf.compat.v1.logging.info("  %s" % input_file)
